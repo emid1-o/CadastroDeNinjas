@@ -17,6 +17,7 @@ public class NinjaModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
+    @Column(unique = true)
     private String email;
     private int idade;
     //ManyToOne serve para dizer que a classe abaixo pode ter varios ninjas, porem um ninja nao pode ter varias missoes
