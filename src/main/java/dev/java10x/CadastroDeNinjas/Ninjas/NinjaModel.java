@@ -15,10 +15,13 @@ public class NinjaModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
+    @Column(name = "nome")
     private String nome;
-    @Column(unique = true)
+    @Column(name = "email",unique = true)
     private String email;
+    @Column(name = "idade")
     private int idade;
     //ManyToOne serve para dizer que a classe abaixo pode ter varios ninjas, porem um ninja nao pode ter varias missoes
     @ManyToOne
