@@ -25,7 +25,7 @@ public class NinjaModel {
     private int idade;
     //ManyToOne serve para dizer que a classe abaixo pode ter varios ninjas, porem um ninja nao pode ter varias missoes
     @ManyToOne
-    @JoinColumn(name = "missoes-id")
+    @JoinColumn(name = "missoes_id")
     private MissoesModel missoes;
 
 }
