@@ -28,4 +28,8 @@ public class NinjaModel {
     @JoinColumn(name = "missoes_id")
     private MissoesModel missoes;
 
+    public void setId(Long id){
+        this.id = id;
+    }
+
 }
