@@ -10,8 +10,11 @@ public class NinjaService {
 
     private NinjaRepository ninjaRepository;
 
-    public NinjaService(NinjaRepository ninjaRepository){
+    private NinjaMapper ninjaMapper;
+
+    public NinjaService(NinjaRepository ninjaRepository, NinjaMapper ninjaMapper){
         this.ninjaRepository = ninjaRepository;
+        this.ninjaMapper = ninjaMapper;
     }
 
     public List<NinjaModel> listarNinjas(){
@@ -23,8 +26,10 @@ public class NinjaService {
         return ninjaModel.orElse(null);
     }
 
-    public NinjaModel criarNinja(NinjaModel ninja){
-        return ninjaRepository.save(ninja);
+    public NinjaDTO criarNinja(NinjaDTO ninjaDTO){
+        NinjaModel ninja = new NinjaMapper().map(ninjaDTO);
+        ninja = ninjaRepository.save(ninja);
+        return ninjaMapper.map(ninja);
     }
 
     public void deletarNinja(Long id){
