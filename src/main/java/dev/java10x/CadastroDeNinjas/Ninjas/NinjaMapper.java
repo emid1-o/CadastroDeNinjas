@@ -6,10 +6,9 @@ import org.springframework.stereotype.Component;
 public class NinjaMapper {
 
     public NinjaModel map(NinjaDTO ninjaDTO){
-
         NinjaModel ninjaModel = new NinjaModel();
         ninjaModel.setId(ninjaDTO.getId());
-        ninjaModel.setNome(ninjaModel.getNome());
+        ninjaModel.setNome(ninjaDTO.getNome()); // <- aqui estava o erro
         ninjaModel.setEmail(ninjaDTO.getEmail());
         ninjaModel.setIdade(ninjaDTO.getIdade());
         ninjaModel.setMissoes(ninjaDTO.getMissoes());
@@ -19,7 +18,6 @@ public class NinjaMapper {
     }
 
     public NinjaDTO map(NinjaModel ninjaModel) {
-
         NinjaDTO ninjaDTO = new NinjaDTO();
         ninjaDTO.setId(ninjaModel.getId());
         ninjaDTO.setNome(ninjaModel.getNome());
