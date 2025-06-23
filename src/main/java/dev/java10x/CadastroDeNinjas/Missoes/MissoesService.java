@@ -1,29 +1,57 @@
 package dev.java10x.CadastroDeNinjas.Missoes;
 
+import dev.java10x.CadastroDeNinjas.Ninjas.NinjaModel;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class MissoesService {
 
     private MissoesRepository missoesRepository;
 
-    public MissoesService(MissoesRepository missoesRepository) {
+    private MissoesMapper missoesMapper;
+
+
+
+    public MissoesService(MissoesRepository missoesRepository, MissoesMapper missoesMapper) {
         this.missoesRepository = missoesRepository;
+        this.missoesMapper = missoesMapper;
     }
 
-    public List<MissoesModel> listarMissoes(){
-        return missoesRepository.findAll();
+    public List<MissoesDTO> listarMissoes(){
+        List<MissoesModel> missoes = missoesRepository.findAll();
+        return missoes.stream()
+                .map(missoesMapper::map)
+                .collect(Collectors.toList());
     }
 
-    public MissoesModel criarMissao(MissoesModel missao){
-        return missoesRepository.save(missao);
+    public MissoesDTO criarMissao(MissoesDTO missoesDTO){
+        MissoesModel missao = new MissoesMapper().map(missoesDTO);
+        missao = missoesRepository.save(missao);
+        return missoesMapper.map(missao);
     }
 
-    public MissoesModel listarMissaoId(Long id){
-        Optional<MissoesModel> missoesModel =  missoesRepository.findById(id);
-        return missoesModel.orElse(null);
+    public MissoesDTO listarMissaoId(Long id){
+        Optional<MissoesModel> missoesPorId =  missoesRepository.findById(id);
+        return missoesPorId.map(missoesMapper::map).orElse(null);
     }
+
+    public List<String> listarNomesDosNinjas(Long idMissao) {
+        MissoesDTO missao = listarMissaoId(idMissao); // busca a missão
+        List<NinjaModel> ninjas = missao.getNinjas();   // pega os ninjas
+
+        if (ninjas == null || ninjas.isEmpty()) {
+            return List.of(); // retorna lista vazia se não tiver ninjas
+        }
+
+        return ninjas.stream()
+                .map(NinjaModel::getNome)
+                .collect(Collectors.toList());
+    }
+
+
+
 }
