@@ -10,7 +10,7 @@ import java.util.List;
 @RequestMapping("/ninjas")
 public class NinjaController {
 
-    private NinjaService ninjaService;
+    private final NinjaService ninjaService;
 
     public NinjaController(NinjaService ninjaService) {
         this.ninjaService = ninjaService;
@@ -47,8 +47,8 @@ public class NinjaController {
 
     //Mostrar todos os ninjas (READ)
     @GetMapping("/todos")
-    public List<NinjaDTO> listarNinjas(){
-        return ninjaService.listarNinjas();
+    public ResponseEntity<List<NinjaDTO>> listarNinjas(){
+        return ResponseEntity.ok().body(ninjaService.listarNinjas());
     }
 
 
@@ -56,8 +56,10 @@ public class NinjaController {
     @PutMapping("/alterar/{id}")
     public ResponseEntity<String> atualizarNinja(@PathVariable Long id, @RequestBody NinjaDTO ninja){
         NinjaDTO ninjaAtualizado =  ninjaService.atualizarNinja(id, ninja);
+        if (ninjaAtualizado.getId() != null){
         return ResponseEntity.status(HttpStatus.OK)
-                .body("Ninja " + ninjaAtualizado.getNome() + " alterado com sucesso.");
+                .body("Ninja " + ninjaAtualizado.getNome() + " alterado com sucesso.");}
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Ninja de id " + id + " não encontrado.");
     }
 
 
